@@ -17,5 +17,21 @@ module.exports = function(app) {
     controller.create
   );
 
+  app.delete(
+    "/api/project/delete/:projectid",
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkProjectExisted],
+    controller.delete
+  )
+  app.put(
+    "/api/project/update/:projectid",
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.newValidDates],
+    controller.update
+  )
+
+  app.put(
+    "/api/project/finish/:projectid",
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkAllTaskFinished],
+    controller.finish
+  )
   
 };

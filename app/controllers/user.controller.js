@@ -46,9 +46,9 @@ exports.create = (req, res) => {
 
 
   exports.changePassword = (req, res) => {
-    console.log("here");
+   
     User.updateOne({_id: req.userId}, {password: bcrypt.hashSync(req.body.new_password, 8)}).exec((err, user) => {
-        console.log(user);
+
         if (err) {
           res.status(500).send({ message: err });
           return;

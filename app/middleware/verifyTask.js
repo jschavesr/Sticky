@@ -33,7 +33,7 @@ newValidTask = (req, res, next) => {
             res.status(500).send({ message: err });
             return;
         }
-        console.log(project);
+
         if (!project) {
             res.status(400).send({ message: "Failed! project with id given does not exist!" });
             return;
@@ -41,14 +41,10 @@ newValidTask = (req, res, next) => {
         let today = new Date();
         today.setHours(0,0,0,0);
         let ex_date = dateHelper.parseDate(req.body.execution_date);
-        console.log(req.body.execution_date);
-        console.log(ex_date);
 
         let st_date = project.starting_date;
         let fn_date = project.finishing_date;
 
-        console.log(st_date);
-        console.log(fn_date);
         if (ex_date < st_date || ex_date > fn_date) {
             res.status(400).send({ message: "Failed! Invalid starting date, sould be between dates of the project!" });
             return;
@@ -98,7 +94,7 @@ checkTaskUnfinished = (req, res, next) => {
     };
 
 checkTaskExisted = (req, res, next) => {
-    // Check if username already exists
+
     Task.findById(req.params.taskid).exec((err, task) => {
       if (err) {
         res.status(500).send({ message: err });

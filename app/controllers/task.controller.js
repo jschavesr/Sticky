@@ -42,7 +42,6 @@ exports.create = (req, res) => {
               res.status(500).send({ message: err });
               return;
             }
-            console.log(task.project)
             res.send({ message: "Task with id: " + ts._id + " was registered successfully!" });
           });
         }
@@ -88,7 +87,7 @@ exports.create = (req, res) => {
 
 
   exports.update = (req, res) => {
-    console.log("holita");
+ 
     Task.findById(req.params.taskid,(err, task) => {
         if (err) {
             res.status(500).send({ message: err });
