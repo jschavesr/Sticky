@@ -29,6 +29,7 @@ exports.create = (req, res) => {
             }
   
             user.roles = roles.map(role => role._id);
+            user.state = "Enabled";
             user.save(err => {
               if (err) {
                 res.status(500).send({ message: err });
@@ -54,6 +55,35 @@ exports.create = (req, res) => {
           return;
         }
         res.status(201).send({message: "Password changed succesfully"});
+        return;
+      });
+
+
+   
+  };
+
+
+  exports.enableUser = (req, res) => {
+    User.updateOne({_id: req.userId}, {state: "Enabled"}).exec((err, user) => {
+
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        res.status(201).send({message: "User: " + user.username + " enabled"});
+        return;
+      });
+  };
+  
+  exports.disableUser = (req, res) => {
+   
+    User.updateOne({_id: req.userId}, {state: "Disabled"}).exec((err, user) => {
+
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        res.status(201).send({message: "User: " + user.username + " disabled"});
         return;
       });
 

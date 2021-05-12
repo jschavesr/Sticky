@@ -31,6 +31,7 @@ exports.signup = (req, res) => {
           }
 
           user.roles = roles.map(role => role._id);
+          user.state = "Enabled"
           user.save(err => {
             if (err) {
               res.status(500).send({ message: err });
@@ -70,6 +71,13 @@ exports.signin = (req, res) => {
           accessToken: null,
           message: "Invalid Password!"
         });
+      }
+      // if user is disabled, It cannot sign in
+      if (user.state === "Disabled") {
+        return res.status(401).send({
+            accessToken: null,
+            message: "User disbabled!"
+          });
       }
 
       var token = jwt.sign({ id: user.id }, config.secret, {
