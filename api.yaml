@@ -1,0 +1,556 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: >-
+    Optional multiline or single-line description in
+    [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: 'localhost:8080/api'
+paths:
+  /auth/signin:
+    post:
+      summary: 'Allows signing to the application, return access tocken.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/signinResponse'
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  /project/create:
+    post:
+      summary: Allows project creation by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Id of project created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  projectId:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/project/delete/{projectid}':
+    delete:
+      summary: Allows project deletion by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/project/update/{projectid}':
+    put:
+      summary: Allows project update by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                finishing_date:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/project/finish/{projectid}':
+    put:
+      summary: Allows project finishing by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: projectid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  /task/create:
+    post:
+      summary: Allows project creation by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Id of task created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  taskid:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/task/delete/{taskid}':
+    delete:
+      summary: Allows task deletion by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/task/update/{taskid}':
+    put:
+      summary: Allows project update by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                execution_date:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/task/finish/{taskid}':
+    put:
+      summary: Allows project finishing by operators.
+      parameters:
+        - name: x-access-token
+          description: jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: taskid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  /user/create:
+    post:
+      summary: Allows operator user creation by administrators.
+      description: an email with credentials will be sent to the new user
+      parameters:
+        - name: x-access-token
+          description: admin jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  /user/changepass:
+    put:
+      summary: Allows password changing to users.
+      parameters:
+        - name: x-access-token
+          description: admin jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/user/enable/{userid}':
+    put:
+      summary: Allows user enabling by administrators.
+      parameters:
+        - name: x-access-token
+          description: admin jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: userid
+          description: id of user to enable
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+  '/user/disable/{userid}':
+    put:
+      summary: Allows user disabling by administrators.
+      parameters:
+        - name: x-access-token
+          description: admin jwt token returned at sign in
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: userid
+          description: id of user to disable
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '401':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    User:
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - name
+        - password
+    Project:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        starting_date:
+          type: string
+          format: date
+        finishing_date:
+          type: string
+          format: date
+      required:
+        - name
+        - description
+        - starting_date
+        - finishing_date
+    Task:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        execution_date:
+          type: string
+          format: date
+      required:
+        - name
+        - execution_date
+    signinResponse:
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        accessToken:
+          type: string
