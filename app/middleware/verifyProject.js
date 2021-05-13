@@ -102,7 +102,21 @@ newValidDates = (req, res, next) => {
       
    
 };
-
+checkOwnership = (req, res, next) => {
+  Project.findById(req.params.projectid, (err, project) => {
+    if (err) {
+        res.status(500).send({ message : err});
+    }
+    
+  
+ 
+    if (project.user == req.userId) {
+      next();
+      return;
+    }
+    res.status(400).send({ message: "Failed! Project is from different user" });
+  });
+}
 checkAllTaskFinished = (req, res, next) => {
 
     Project.findById(req.params.projectid, (err, project) => {
@@ -164,7 +178,8 @@ const verifyProject = {
     newValidProject,
     newValidDates,
     checkAllTaskFinished,
-    checkProjectExisted
+    checkProjectExisted,
+    checkOwnership
 };
 
 module.exports = verifyProject;

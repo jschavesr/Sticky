@@ -42,7 +42,8 @@ exports.create = (req, res) => {
               res.status(500).send({ message: err });
               return;
             }
-            res.send({ message: "Task with id: " + ts._id + " was registered successfully!" });
+            res.send({ message: "Success",
+                      taskId: ts._id });
           });
         }
       );

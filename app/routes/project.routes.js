@@ -19,18 +19,18 @@ module.exports = function(app) {
 
   app.delete(
     "/api/project/delete/:projectid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkProjectExisted],
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkProjectExisted, verifyProject.checkOwnership],
     controller.delete
   )
   app.put(
     "/api/project/update/:projectid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyProject.newValidDates],
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.newValidDates,  verifyProject.checkOwnership],
     controller.update
   )
 
   app.put(
     "/api/project/finish/:projectid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkAllTaskFinished],
+    [authJwt.verifyToken, authJwt.isOperator, verifyProject.checkAllTaskFinished,  verifyProject.checkOwnership],
     controller.finish
   )
   

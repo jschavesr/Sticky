@@ -13,26 +13,26 @@ module.exports = function(app) {
 
   app.post(
     "/api/task/create",
-    [authJwt.verifyToken, authJwt.isOperator, verifyTask.newValidTask],
+    [authJwt.verifyToken, authJwt.isOperator, verifyTask.newValidTask, verifyTask.checkOwnershipNewTask],
     controller.create
   );
 
   app.delete(
     "/api/task/delete/:taskid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted],
+    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted, verifyTask.checkOwnershipExistingTask],
     controller.delete
   );
 
   app.put(
     "/api/task/update/:taskid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted, verifyTask.checkTaskUnfinished ,verifyTask.newValidDate],
+    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted,verifyTask.checkOwnershipExistingTask, verifyTask.checkTaskUnfinished ,verifyTask.newValidDate],
     controller.update
   )
   
 
   app.post(
     "/api/task/finish/:taskid",
-    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted, verifyTask.checkTaskUnfinished],
+    [authJwt.verifyToken, authJwt.isOperator, verifyTask.checkTaskExisted, verifyTask.checkOwnershipExistingTask, verifyTask.checkTaskUnfinished],
     controller.finish
   )
 };

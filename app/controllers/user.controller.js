@@ -74,8 +74,7 @@ exports.create = (req, res) => {
           res.status(500).send({ message: err });
           return;
         }
-        console.log(user);
-        res.status(201).send({message: "User: enabled"});
+        res.status(201).send({message: "Success"});
         return;
       });
   };
@@ -88,8 +87,7 @@ exports.create = (req, res) => {
           res.status(500).send({ message: err });
           return;
         }
-        console.log(user);
-        res.status(201).send({message: "User disabled"});
+        res.status(201).send({message: "Success"});
         return;
       });
 

@@ -17,15 +17,21 @@ exports.create = (req, res) => {
     });
 
     project.save((err, pr) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-  
-  
-      res.send({ message: "Project with id: " + pr._id + " was registered successfully!" });
-  
-      
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        
+        pr.user = req.userId;
+            pr.save((err, pr) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            } 
+            res.send({ message: "Success!",
+                       projectId: pr._id  });
+    
+        });
     });
   };
 

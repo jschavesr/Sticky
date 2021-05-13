@@ -13,7 +13,11 @@ const Project = mongoose.model(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Task"
       }
-    ]
+    ],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
   })
 );
 

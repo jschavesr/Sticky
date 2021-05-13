@@ -93,6 +93,40 @@ checkTaskUnfinished = (req, res, next) => {
       });
     };
 
+checkOwnershipNewTask = (req, res, next) => {
+    Project.findById(req.body.project_id, (err, project) => {
+        if (err) {
+            res.status(500).send({ message : err});
+        }
+        if (project.user == req.userId) {
+          next();
+          return;
+        }
+        res.status(400).send({ message: "Failed! Project is from different user" });
+      });
+}
+checkOwnershipExistingTask = (req, res, next) => {
+    Task.findById(req.params.taskid).exec((err, task) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+    
+        Project.findById(task.project, (err, project) => {
+            if (err) {
+                res.status(500).send({ message : err});
+            }
+            if (project.user == req.userId) {
+              next();
+              return;
+            }
+            res.status(400).send({ message: "Failed! Project is from different user" });
+          });
+      
+    
+      });
+}
+
 checkTaskExisted = (req, res, next) => {
 
     Task.findById(req.params.taskid).exec((err, task) => {
@@ -115,7 +149,9 @@ const verifyTask = {
     newValidTask,
     newValidDate,
     checkTaskExisted,
-    checkTaskUnfinished
+    checkTaskUnfinished,
+    checkOwnershipExistingTask,
+    checkOwnershipNewTask
 
 };
 

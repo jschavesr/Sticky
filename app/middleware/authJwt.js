@@ -16,8 +16,20 @@ verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: "Unauthorized!" });
     }
-    req.userId = decoded.id;
-    next();
+    User.findById(decoded.id).exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        res.status(401).send({ message: "Token invalid!" });
+        return;
+      }
+      req.userId = decoded.id;
+      next();
+    });
+    
+
   });
 };
 
@@ -50,7 +62,7 @@ isAdmin = (req, res, next) => {
       res.status(500).send({ message: err });
       return;
     }
-
+    console.log(user);
     Role.find(
       {
         _id: { $in: user.roles }
