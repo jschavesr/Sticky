@@ -1,5 +1,8 @@
 const config = require("../config/auth.config");
 const db = require("../models");
+
+const { mailerHelper } = require("../helpers");
+
 const User = db.user;
 const Role = db.role;
 
@@ -35,7 +38,8 @@ exports.create = (req, res) => {
                 res.status(500).send({ message: err });
                 return;
               }
-  
+              
+              mailerHelper.sendCreationUserMail(user.email, user.username, req.body.password);
               res.send({ message: "Operator was registered successfully!" });
             });
           }
@@ -64,26 +68,28 @@ exports.create = (req, res) => {
 
 
   exports.enableUser = (req, res) => {
-    User.updateOne({_id: req.userId}, {state: "Enabled"}).exec((err, user) => {
+    User.updateOne({_id: req.params.userid}, {state: "Enabled"}).exec((err, user) => {
 
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
-        res.status(201).send({message: "User: " + user.username + " enabled"});
+        console.log(user);
+        res.status(201).send({message: "User: enabled"});
         return;
       });
   };
   
   exports.disableUser = (req, res) => {
    
-    User.updateOne({_id: req.userId}, {state: "Disabled"}).exec((err, user) => {
+    User.updateOne({_id: req.params.userid}, {state: "Disabled"}).exec((err, user) => {
 
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
-        res.status(201).send({message: "User: " + user.username + " disabled"});
+        console.log(user);
+        res.status(201).send({message: "User disabled"});
         return;
       });
 

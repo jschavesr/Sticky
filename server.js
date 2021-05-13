@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./app/models");
 const dbConfig = require("./app/config/db.config")
 const Role = db.role;
+require('dotenv').config();
 
 const app = express();
 

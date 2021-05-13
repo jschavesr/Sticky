@@ -30,7 +30,6 @@ verifyPass = (req, res, next) => {
           res.status(500).send({ message: err });
           return;
         }
-        console.log(pass, user.password);
         var passwordIsValid = bcrypt.compareSync(
             pass,
             user.password
@@ -39,7 +38,7 @@ verifyPass = (req, res, next) => {
         if (!passwordIsValid) {
             return res.status(401).send({message: "Password invalid"})
         }
-        console.log("pass");
+
         next();
     });
   };

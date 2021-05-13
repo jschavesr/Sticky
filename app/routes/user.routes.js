@@ -24,6 +24,20 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.verifyPass],
     controller.changePassword
   );
+
+
+  app.put(
+    "/api/user/enable/:userid",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.enableUser
+  );
+  app.put(
+    "/api/user/disable/:userid",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.disableUser
+  );
+
+
 /*
   app.post(
     "/api/user/enable",

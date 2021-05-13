@@ -2,8 +2,8 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const Project = db.project;
 const Task = db.task;
-const Role = db.role;
-const { dateHelper } = require("../helpers");
+
+const { dateHelper, mailerHelper } = require("../helpers");
 
 var bcrypt = require("bcryptjs");
 
@@ -89,10 +89,11 @@ exports.update = (req, res) => {
             return;
         }
         project.state = "Finalizado";
-        project.save(err => {
+        project.save((err) => {
             if (err){
                 res.status(500).send({message : err});
             }
+            mailerHelper.sendFinishedProjectMail(project)
             res.send({message: "Project with id : " + project._id + " finished!"});
         })
     });
